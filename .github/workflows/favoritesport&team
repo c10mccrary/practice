@@ -1,1 +1,5 @@
-
+sport = input("What is your favorite sport? ")
+team = input("What is your favorite team in that sport? ")
+letters = len(sport) + len(team)
+print("You like", sport, "and your favorite team is", team)
+print("Total characters in both names:", letters)
