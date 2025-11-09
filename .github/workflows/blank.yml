@@ -1,8 +1,56 @@
-num1 = float(input("Enter first number: ")
-num2 = float(input("Enter second number: ")
-sum_result = num1 + num2
-difference = num1 - num2
-product = num1 * num2
-print("Sum:", sum_result)
-print("Difference:", difference)
-print("Product:", product)
+"""Simple calculator: reads two numbers and prints sum, difference, product, quotient."""
+
+
+def input_float(prompt: str) -> float:
+    """Prompt until the user enters a valid float."""
+    while True:
+        try:
+            return float(input(prompt))
+        except ValueError:
+            print("Invalid number — please enter a valid numeric value.")
+
+
+def calculate(a: float, b: float) -> Dict[str, Optional[float]]:
+    results: Dict[str, Optional[float]] = {
+        "sum": a + b,
+        "difference": a - b,
+        "product": a * b,
+    }
+    try:
+        results["quotient"] = a / b
+    except ZeroDivisionError:
+        results["quotient"] = None
+    return results
+
+
+def format_results(results: Dict[str, Optional[float]]) -> str:
+    lines = [
+        f"Sum: {results['sum']}",
+        f"Difference: {results['difference']}",
+        f"Product: {results['product']}",
+    ]
+    q = results.get("quotient")
+    lines.append(f"Quotient: {q if q is not None else 'undefined (division by zero)'}")
+    return "\n".join(lines)
+
+
+def main() -> int:
+    # Allow passing numbers on the command line: python calculator.py 3 4
+    if len(sys.argv) == 3:
+        try:
+            a = float(sys.argv[1])
+            b = float(sys.argv[2])
+        except ValueError:
+            print("Command-line arguments must be numbers.")
+            return 2
+    else:
+        a = input_float("Enter first number: ")
+        b = input_float("Enter second number: ")
+
+    results = calculate(a, b)
+    print(format_results(results))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
